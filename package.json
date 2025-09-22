@@ -1,0 +1,22 @@
+{
+  "name": "@martingv10/image-carousel",
+  "version": "1.0.0",
+  "description": "This makes images into a carousel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MartinGV10/Image-Carousel.git"
+  },
+  "keywords": [
+    "image-carousel"
+  ],
+  "author": "Martin Ganen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MartinGV10/Image-Carousel/issues"
+  },
+  "homepage": "https://github.com/MartinGV10/Image-Carousel#readme"
+}
