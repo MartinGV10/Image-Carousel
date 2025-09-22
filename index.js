@@ -68,65 +68,100 @@ class Carousel {
             if (this.imageElements.length === 0) return
             this.imageElements[this.idx].style.display = 'none'
 
-            this.idx++  
-            this.selectorIdx++          
+            this.idx++
+            this.selectorIdx++
             if (this.idx === this.imageElements.length && this.selectorIdx === selectorList.length) {
                 this.idx = 0
                 this.selectorIdx = 0
-                selectorList[selectorList.length - 1].style.backgroundColor = 'gray'
+                // reset all selectors to gray then highlight current below
+                selectorList.forEach(s => s.style.backgroundColor = 'gray')
             }
 
             this.imageElements[this.idx].style.display = 'block'
             console.log(`${this.idx} -> ${this.imageElements[this.idx].src}`)
 
+            // update selector colors safely
+            selectorList.forEach(s => s.style.backgroundColor = 'gray')
             selectorList[this.selectorIdx].style.backgroundColor = 'aquamarine'
-            selectorList[this.selectorIdx - 1].style.backgroundColor = 'gray'
-
-
-
+            // reset inactivity timer on user action
+            startInactivityTimer()
         })
 
         left.addEventListener('click', () => {
             if (this.imageElements.length === 0) return
             this.imageElements[this.idx].style.display = 'none'
-            
+
             this.idx--
-            this.selectorIdx--          
+            this.selectorIdx--
             if (this.idx < 0 && this.selectorIdx < 0) {
                 this.idx = this.imageElements.length - 1
                 this.selectorIdx = this.imageElements.length - 1
-                selectorList[0].style.backgroundColor = 'gray'
+                selectorList.forEach(s => s.style.backgroundColor = 'gray')
             }
 
             this.imageElements[this.idx].style.display = 'block'
             console.log(`${this.idx} -> ${this.imageElements[this.idx].src}`)
 
-            selectorList[this.idx].style.backgroundColor = 'aquamarine'
-            selectorList[this.idx + 1].style.backgroundColor = 'grey'
-            
-
+            selectorList.forEach(s => s.style.backgroundColor = 'gray')
+            selectorList[this.selectorIdx].style.backgroundColor = 'aquamarine'
+            // reset inactivity timer on user action
+            startInactivityTimer()
         })
 
         // clicking a selector jumps to that image index
         selectorList.forEach((item, index) => {
             item.addEventListener('click', () => {
                 if (this.imageElements.length === 0) return
-                // hide current image and reset its selector color
+                // hide current and reset all selectors
                 this.imageElements[this.idx].style.display = 'none'
-                selectorList[this.idx].style.backgroundColor = 'gray'
+                selectorList.forEach(s => s.style.backgroundColor = 'gray')
 
-                // update indices to clicked index
+                // jump to clicked index
                 this.idx = index
                 this.selectorIdx = index
 
-                // show target image and highlight its selector
                 this.imageElements[this.idx].style.display = 'block'
                 selectorList[this.idx].style.backgroundColor = 'aquamarine'
                 console.log(`jump -> ${this.idx} -> ${this.imageElements[this.idx].src}`)
+                // reset inactivity timer on user action
+                startInactivityTimer()
             })
         });
 
+        // inactivity auto-advance: advance to next image after 5s of no interaction
+        let inactivityTimer = null
+        const startInactivityTimer = () => {
+            clearTimeout(inactivityTimer)
+            inactivityTimer = setTimeout(() => {
+                if (this.imageElements.length === 0) return
+                // hide current
+                this.imageElements[this.idx].style.display = 'none'
+                // advance indices with wrap
+                this.idx++
+                this.selectorIdx++
+                if (this.idx >= this.imageElements.length) {
+                    this.idx = 0
+                    this.selectorIdx = 0
+                }
+                // show next and update selectors
+                this.imageElements[this.idx].style.display = 'block'
+                selectorList.forEach(s => s.style.backgroundColor = 'gray')
+                selectorList[this.selectorIdx].style.backgroundColor = 'aquamarine'
+                console.log(`auto -> ${this.idx} -> ${this.imageElements[this.idx].src}`)
+                // schedule next auto-advance
+                startInactivityTimer()
+            }, 5000) // 5 seconds
+        }
 
+        // reset timer on user interactions
+        imgCont.addEventListener('mousemove', startInactivityTimer)
+        imgCont.addEventListener('touchstart', startInactivityTimer)
+        right.addEventListener('click', startInactivityTimer)
+        left.addEventListener('click', startInactivityTimer)
+        selectorList.forEach(item => item.addEventListener('click', startInactivityTimer))
+
+        // start the inactivity timer initially
+        startInactivityTimer()
 
     }
 
