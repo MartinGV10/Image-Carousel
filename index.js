@@ -6,6 +6,7 @@ class Carousel {
         this.idx = 0
         this.selectorIdx = 0
         this.imageElements = [] // store created <img> elements so we can show/hide them
+        this.selNum = -1
     }
 
     createCarousel() {
@@ -32,6 +33,9 @@ class Carousel {
 
         let picture;
         let selectorList = [];
+        let selIdx = [];
+        let selector;
+        let picMap = new Map()
         for (let i = 0; i < this.images.length; i++) {
             picture = document.createElement('img')
             picture.src = this.images[i]
@@ -39,16 +43,23 @@ class Carousel {
             imagesContainer.appendChild(picture)
             this.imageElements.push(picture)
 
-            let selector = document.createElement('div')
+            selector = document.createElement('div')
             selector.classList.add('selector')
+            this.selNum++
+            selIdx.push(this.selNum)
             bottom.appendChild(selector)
             selectorList.push(selector)
+
+            // Hashmap of pictures and indexes -> {1 -> pic1}
+            picMap.set(this.imageElements[i], selectorList[i])
         }
 
         // show the first image if present
         if (this.imageElements.length > 0) {
             this.imageElements[this.idx].style.display = 'block'
             selectorList[this.idx].style.backgroundColor = 'aquamarine'
+            // keep selector index in sync with shown image
+            this.selectorIdx = this.idx
         }
 
         const right = document.createElement('img')
@@ -99,6 +110,25 @@ class Carousel {
             
 
         })
+
+        // clicking a selector jumps to that image index
+        selectorList.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                if (this.imageElements.length === 0) return
+                // hide current image and reset its selector color
+                this.imageElements[this.idx].style.display = 'none'
+                selectorList[this.idx].style.backgroundColor = 'white'
+
+                // update indices to clicked index
+                this.idx = index
+                this.selectorIdx = index
+
+                // show target image and highlight its selector
+                this.imageElements[this.idx].style.display = 'block'
+                selectorList[this.idx].style.backgroundColor = 'aquamarine'
+                console.log(`jump -> ${this.idx} -> ${this.imageElements[this.idx].src}`)
+            })
+        });
 
 
 
