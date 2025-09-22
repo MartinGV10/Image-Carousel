@@ -6,7 +6,6 @@ class Carousel {
         this.idx = 0
         this.selectorIdx = 0
         this.imageElements = [] // store created <img> elements so we can show/hide them
-        this.selNum = -1
     }
 
     createCarousel() {
@@ -35,7 +34,6 @@ class Carousel {
         let selectorList = [];
         let selIdx = [];
         let selector;
-        let picMap = new Map()
         for (let i = 0; i < this.images.length; i++) {
             picture = document.createElement('img')
             picture.src = this.images[i]
@@ -50,8 +48,6 @@ class Carousel {
             bottom.appendChild(selector)
             selectorList.push(selector)
 
-            // Hashmap of pictures and indexes -> {1 -> pic1}
-            picMap.set(this.imageElements[i], selectorList[i])
         }
 
         // show the first image if present
@@ -77,14 +73,14 @@ class Carousel {
             if (this.idx === this.imageElements.length && this.selectorIdx === selectorList.length) {
                 this.idx = 0
                 this.selectorIdx = 0
-                selectorList[selectorList.length - 1].style.backgroundColor = 'white'
+                selectorList[selectorList.length - 1].style.backgroundColor = 'gray'
             }
 
             this.imageElements[this.idx].style.display = 'block'
             console.log(`${this.idx} -> ${this.imageElements[this.idx].src}`)
 
             selectorList[this.selectorIdx].style.backgroundColor = 'aquamarine'
-            selectorList[this.selectorIdx - 1].style.backgroundColor = 'white'
+            selectorList[this.selectorIdx - 1].style.backgroundColor = 'gray'
 
 
 
@@ -99,14 +95,14 @@ class Carousel {
             if (this.idx < 0 && this.selectorIdx < 0) {
                 this.idx = this.imageElements.length - 1
                 this.selectorIdx = this.imageElements.length - 1
-                selectorList[0].style.backgroundColor = 'white'
+                selectorList[0].style.backgroundColor = 'gray'
             }
 
             this.imageElements[this.idx].style.display = 'block'
             console.log(`${this.idx} -> ${this.imageElements[this.idx].src}`)
 
             selectorList[this.idx].style.backgroundColor = 'aquamarine'
-            selectorList[this.idx + 1].style.backgroundColor = 'white'
+            selectorList[this.idx + 1].style.backgroundColor = 'grey'
             
 
         })
@@ -117,7 +113,7 @@ class Carousel {
                 if (this.imageElements.length === 0) return
                 // hide current image and reset its selector color
                 this.imageElements[this.idx].style.display = 'none'
-                selectorList[this.idx].style.backgroundColor = 'white'
+                selectorList[this.idx].style.backgroundColor = 'gray'
 
                 // update indices to clicked index
                 this.idx = index
@@ -139,9 +135,7 @@ class Carousel {
 
 const pics = ['./assets/door.jpg', './assets/typewriter.jpg', './assets/sign.jpg']
 
-// , './assets/door.jpg', './assets/typewriter.jpg'
 
 const pp = new Carousel('hi', pics, 'content').createCarousel()
-// console.log(pics[0])
 
 export default Carousel
