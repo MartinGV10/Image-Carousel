@@ -8,8 +8,8 @@
     justify-content: space-around;
     align-items: center;
     gap: 40px;
-    background-color: black;
-    color: white;
+    /* background-color: black; */
+    /* color: white; */
     padding: 20px;
     max-width: 80%;
     margin: 200px auto;
@@ -18,12 +18,13 @@
 .top {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 40px;
+    min-width: 800px;
 }
 
 .images {
-    border: 2px solid white;
+    /* border: 2px solid white; */
     border-radius: 10px;
 }
 
@@ -46,7 +47,7 @@
 }
 
 .selector {
-    background-color: white;
+    background-color: gray;
     width: 30px;
     height: 30px;
     cursor: pointer;
@@ -54,11 +55,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: 0.2s all;
 }
 
-.selector:hover {
-    background-color: aquamarine;
-}
+/* .selector:hover {
+    background-color: rgb(174, 252, 226);
+} */
 
 .bottom {
     display: flex;
